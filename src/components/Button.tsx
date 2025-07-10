@@ -29,10 +29,10 @@ export default function Button({
     alignItems: variant === 'secondary' ? 'center' : undefined,
     justifyContent: variant === 'secondary' ? 'center' : undefined,
     gap: variant === 'secondary' ? 8 : undefined,
-    background: variant === 'primary' ? '#0d9488' : '#fff', // teal-600
-    color: variant === 'primary' ? '#fff' : '#71717a', // white for primary, zinc-500 for secondary
+    background: variant === 'primary' ? '#0d9488' : '#fff', 
+    color: variant === 'primary' ? '#fff' : '#71717a', 
     marginBottom: 16,
-    border: variant === 'secondary' ? '1.5px solid #e4e4e7' : 'none', // zinc-200
+    border: variant === 'secondary' ? '1.5px solid #e4e4e7' : 'none', 
     ...style,
   };
   return (

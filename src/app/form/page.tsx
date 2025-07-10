@@ -191,7 +191,7 @@ export default function FormPage() {
               />
             </FormSection>
             
-            <FormSection label="Renovation Summary">
+            <FormSection label="Renovation Summary" required={false}>
               <div className="w-full px-6 py-4 rounded-lg border border-gray-200 bg-white space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Property</label>
@@ -320,13 +320,17 @@ export default function FormPage() {
 
   const handleNext = () => {
     if (!validateStep()) return;
+    if (step === TOTAL_STEPS) {
+      router.push("/maintenance");
+      return;
+    }
     setStep(prev => (prev < TOTAL_STEPS ? prev + 1 : prev));
   };
 
   return (
     <div className={"responsive-form min-h-screen bg-white flex flex-col"} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <div className="flex-1 flex flex-col items-center" style={{ width: '100%', paddingTop: '84px' }}>
+      <div className="flex-1 flex flex-col items-center" style={{ width: '100%', paddingTop: '84px', paddingBottom: '100px' }}> {/* Tambah padding bottom */}
         <div className="card w-full md:w-1/2 lg:w-1/2">
           <div className="bg-white rounded-lg p-4 mt-2 md:p-8 md:mt-6 w-full">
             <StepProgress step={step} total={TOTAL_STEPS} />
@@ -347,6 +351,7 @@ export default function FormPage() {
         @media (max-width: 600px) {
           .flex-1 {
             padding-top: 64px !important;
+            padding-bottom: 100px !important;
           }
         }
       `}</style>
