@@ -10,7 +10,7 @@ export default function Home() {
     <div className={inter.className + ' responsive-landing'} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       <div className="main-content" style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-        {/* Left Side */}
+        
         <div className="left-side" style={{
           flex: 1,
           background: '#fff',
@@ -22,8 +22,8 @@ export default function Home() {
         }}>
           <LandingCard />
         </div>
-        {/* Right Side */}
-        <div className="right-side" style={{ flex: 1, background: '#16a085', minHeight: 0 }} />
+        
+        <div className="right-side" style={{ flex: 1, background: '#0d9488', minHeight: 0 }} />
       </div>
       <style jsx>{`
         .responsive-landing {
@@ -55,7 +55,7 @@ export default function Home() {
         }
         @media (max-width: 480px) {
           .left-side {
-            padding: 32px 8px 16px 8px !important;
+            padding: 20px 20px !important;
           }
         }
       `}</style>

@@ -1,8 +1,6 @@
 "use client";
 import React from 'react';
 
-// Zinc 950: #09090b, Zinc 500: #71717a, Emerald 600: #059669, Zinc 200: #e4e4e7
-
 type ButtonProps = {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary';
@@ -22,7 +20,7 @@ export default function Button({
 }: ButtonProps) {
   const baseStyle: React.CSSProperties = {
     width: '100%',
-    borderRadius: 9999, // rounded-full
+    borderRadius: 9999, 
     fontWeight: 500,
     fontSize: 16,
     cursor: 'pointer',
@@ -31,9 +29,9 @@ export default function Button({
     alignItems: variant === 'secondary' ? 'center' : undefined,
     justifyContent: variant === 'secondary' ? 'center' : undefined,
     gap: variant === 'secondary' ? 8 : undefined,
-    background: variant === 'primary' ? '#059669' : '#fff', // emerald-600
+    background: variant === 'primary' ? '#0d9488' : '#fff', // teal-600
     color: variant === 'primary' ? '#fff' : '#71717a', // white for primary, zinc-500 for secondary
-    marginBottom: 8,
+    marginBottom: 16,
     border: variant === 'secondary' ? '1.5px solid #e4e4e7' : 'none', // zinc-200
     ...style,
   };
