@@ -416,7 +416,7 @@ export default function FormPage() {
   const handleNext = () => {
     if (!validateStep()) return;
     if (state.step === TOTAL_STEPS) {
-      router.push("/maintenance");
+      router.push("/dashboard");
       return;
     }
     dispatch({ type: 'SET_STEP', payload: state.step < TOTAL_STEPS ? state.step + 1 : state.step });
