@@ -6,7 +6,7 @@ interface PropertyTypeSelectorProps {
   onChange: (value: string) => void;
 }
 
-const types = ["HDB", "Condo", "Landed"];
+const types = ["HDB", "Condo"];
 
 const PropertyTypeSelector: React.FC<PropertyTypeSelectorProps> = ({ value, onChange }) => (
   <ButtonGroup

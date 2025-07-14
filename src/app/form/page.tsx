@@ -10,11 +10,13 @@ import CustomDropdown from "@/components/CustomDropdown";
 import FormSection from "@/components/FormSection";
 import ButtonGroup from "@/components/ButtonGroup";
 import MultiSelectDropdown from "@/components/MultiSelectDropdown";
+import { usePlan } from '@/contexts/PlanContext';
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 const unitTypesByPropertyType = {
   HDB: ["1-room", "2-room", "3-room", "4-room", "5-room", "Executive", "3Gen", "Jumbo"],
-  Condo: ["1-bedroom", "2-bedroom", "3-bedroom", "4-bedroom", "5-bedroom"],
-  Landed: ["Terrace", "Semi-Detached", "Bungalow"]
+  Condo: ["1-bedroom", "2-bedroom", "3-bedroom", "4-bedroom", "5-bedroom"]
 };
 
 const TOTAL_STEPS = 5;
@@ -135,6 +137,9 @@ function formReducer(state: FormState, action: FormAction): FormState {
 export default function FormPage() {
   const [state, dispatch] = useReducer(formReducer, initialState);
   const router = useRouter();
+  const { setPlanName, setPlanData } = usePlan();
+  const { signInWithGoogle, user } = useAuth();
+  const [isCreatingPlan, setIsCreatingPlan] = useState(false);
 
   const handlePropertyTypeChange = (value: string) => {
     dispatch({ type: 'SET_PROPERTY_TYPE', payload: value });
@@ -413,12 +418,60 @@ export default function FormPage() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!validateStep()) return;
+    
     if (state.step === TOTAL_STEPS) {
-      router.push("/dashboard");
+      setIsCreatingPlan(true);
+      
+      try {
+        // Save plan data to context and localStorage first
+        const planData = {
+          propertyType: state.propertyType,
+          unitType: state.unitType,
+          propertyAge: state.propertyAge,
+          renovationType: state.renovationType,
+          qualityTier: state.qualityTier,
+          areasToRenovate: state.areasToRenovate,
+          floorReplacement: state.floorReplacement,
+          wallModifications: state.wallModifications,
+          cabinetRemoval: state.cabinetRemoval,
+          kitchenCabinet: state.kitchenCabinet,
+          wardrobe: state.wardrobe,
+          additionalFeature: state.additionalFeature,
+          essentialServices: state.essentialServices,
+          doorReplacement: state.doorReplacement,
+        };
+        
+        // Save to context
+        setPlanName(state.planName);
+        setPlanData(planData);
+        
+        // Save to localStorage for persistence
+        localStorage.setItem('renovationPlan', JSON.stringify({
+          planName: state.planName,
+          planData: planData
+        }));
+        
+        // Check if user is already logged in
+        if (user) {
+          // User already logged in, go directly to dashboard
+          router.push("/dashboard");
+        } else {
+          // User not logged in, trigger Google sign in
+          await signInWithGoogle();
+          // signInWithGoogle already redirects to dashboard on success
+        }
+      } catch (error) {
+        console.error('Error creating plan:', error);
+        // Handle error - maybe show a toast or error message
+      } finally {
+        setIsCreatingPlan(false);
+      }
+      
       return;
     }
+    
     dispatch({ type: 'SET_STEP', payload: state.step < TOTAL_STEPS ? state.step + 1 : state.step });
   };
 
@@ -434,7 +487,8 @@ export default function FormPage() {
               onBack={handleBack}
               onNext={handleNext}
               backLabel={state.step === 1 ? undefined : 'Back'}
-              nextLabel={state.step === TOTAL_STEPS ? 'Finish' : 'Next'}
+              nextLabel={state.step === TOTAL_STEPS ? (isCreatingPlan ? 'Creating Plan...' : 'Create a Plan') : 'Next'}
+              disabled={isCreatingPlan}
             />
           </div>
         </div>

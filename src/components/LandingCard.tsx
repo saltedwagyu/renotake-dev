@@ -2,9 +2,27 @@
 import Button from './Button';
 import { useRouter } from 'next/navigation';
 import GoogleIcon from './icons/GoogleIcon';
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 export default function LandingCard() {
   const router = useRouter();
+  const { signInWithGoogle } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Failed to sign in:', error);
+      // Tampilkan error message ke user jika diperlukan
+      alert('Failed to sign in. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="card" style={{
       width: '100%',
@@ -32,11 +50,15 @@ export default function LandingCard() {
       }}>
         Already have an Account?
       </div>
-      <Button variant="secondary" onClick={() => router.push('/maintenance')}>
-        <GoogleIcon /> Continue with Google
+      <Button 
+        variant="secondary" 
+        onClick={handleGoogleSignIn}
+        style={{ opacity: isLoading ? 0.7 : 1 }}
+      >
+        <GoogleIcon /> {isLoading ? 'Signing in...' : 'Continue with Google'}
       </Button>
       <div style={{ fontSize: 13, color: '#555', marginTop: 10, textAlign: 'center' }}>
-        By continuing, you agree to RenoTake’s <a href="#" style={{ color: '#059669', textDecoration: 'underline' }}>Terms of Service</a> and <a href="#" style={{ color: '#059669', textDecoration: 'underline' }}>Privacy Policy</a>
+        By continuing, you agree to RenoTake's <a href="#" style={{ color: '#059669', textDecoration: 'underline' }}>Terms of Service</a> and <a href="#" style={{ color: '#059669', textDecoration: 'underline' }}>Privacy Policy</a>
       </div>
     </div>
   );

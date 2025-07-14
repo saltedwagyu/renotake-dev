@@ -57,7 +57,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
           <ChevronDownIcon size={20} className="text-gray-400 ml-2" />
         </button>
         {showDropdown && (
-          <div className="absolute left-0 right-0 mt-2 z-10 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+          <div className="absolute left-0 right-0 mt-2 z-10 bg-white border border-gray-200 rounded-lg max-h-60 overflow-y-auto">
             {options.map((option) => (
               <div
                 key={option}
